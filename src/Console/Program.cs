@@ -1,24 +1,28 @@
 ﻿using Tresorix.Domain.Platform;
 
-var appleAsset = new Asset("Apple Inc.", "AAPL", 100);
-appleAsset.Id = Guid.NewGuid();
-var unknownAsset = new Asset("xxx", "xxx", 0);
+var sp500AccAsset = new Asset("S&P500 x Acc", "SP500", 532.62);
+var sp500Asset = new Asset("S&P500", "SP500", 50.12);
+var sp500EsgAsset = new Asset("S&P500 ESG", "SP500", 69.22);
+var nasdaqAsset = new Asset("Nasdaq", "Nas", 997.85);
 
-var bitpandaPlatform = new Platform("BitPanda");
-var tradeRepublicPlatform = new Platform("TradeRepublic");
+var bitpanda = new Platform("Bitpanda");
 
-bitpandaPlatform.AddAsset(appleAsset);
-tradeRepublicPlatform.AddAsset(appleAsset);
+bitpanda.AddAsset(sp500AccAsset);
+bitpanda.AddAsset(sp500Asset);
+bitpanda.AddAsset(sp500EsgAsset);
+bitpanda.AddAsset(nasdaqAsset);
 
-appleAsset.UpdateActualValue(537.82);
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, sp500AccAsset, 537.82));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, sp500AccAsset, 524.26));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, sp500Asset, 48.60));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, sp500EsgAsset, 67.11));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, nasdaqAsset, 975.17));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, nasdaqAsset, 1015.27));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, nasdaqAsset, 1012.26));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, nasdaqAsset, 1014.27));
+bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, nasdaqAsset, 1004.72));
 
-bitpandaPlatform.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, appleAsset));
-
-appleAsset.UpdateActualValue(524.26);
-
-bitpandaPlatform.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, appleAsset));
-appleAsset.UpdateActualValue(532.95);
-
-var profit = bitpandaPlatform.CalculateTotalProfitOrLoss();
+var profit = bitpanda.CalculateTotalProfitOrLoss();
+var wallet = bitpanda.CalculateTotalWallet();
 
 Console.WriteLine();

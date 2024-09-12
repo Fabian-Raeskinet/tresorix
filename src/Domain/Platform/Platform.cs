@@ -24,6 +24,17 @@ public class Platform(string name) : AggregateRoot<Guid>
         _transactions.Add(transaction);
     }
 
+    public double CalculateTotalWallet()
+    {
+        double totalWallet = 0;
+        foreach (var transaction in _transactions)
+        {
+            totalWallet += transaction.Amount;
+        }
+
+        return totalWallet + CalculateTotalProfitOrLoss();
+    }
+
     public double CalculateTotalProfitOrLoss()
     {
         double totalProfitOrLoss = 0;

@@ -5,7 +5,6 @@ public class Asset(string name, string? ticker, double actualValue) : Entity<Gui
     public string? Name { get; private set; } = name;
     public string? Ticker { get; private set; } = ticker;
     public double ActualValue { get; private set; } = actualValue;
-    public Guid PlatformId { get; set; }
 
     public void UpdateActualValue(double newValue)
     {
