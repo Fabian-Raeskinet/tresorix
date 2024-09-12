@@ -20,7 +20,21 @@ public class Platform(string name) : AggregateRoot<Guid>
         {
             throw new InvalidOperationException("Asset not found on this platform.");
         }
-        
+
         _transactions.Add(transaction);
+    }
+
+    public double CalculateTotalProfitOrLoss()
+    {
+        double totalProfitOrLoss = 0;
+
+        foreach (var transaction in _transactions)
+        {
+            var profitOrLoss = (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity;
+
+            totalProfitOrLoss += profitOrLoss;
+        }
+
+        return totalProfitOrLoss;
     }
 }

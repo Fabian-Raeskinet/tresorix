@@ -10,13 +10,15 @@ var tradeRepublicPlatform = new Platform("TradeRepublic");
 bitpandaPlatform.AddAsset(appleAsset);
 tradeRepublicPlatform.AddAsset(appleAsset);
 
-appleAsset.UpdateActualValue(150);
+appleAsset.UpdateActualValue(537.82);
 
-bitpandaPlatform.AddTransaction(new Transaction(DateTime.Now, 10, TransactionType.Buy, appleAsset));
+bitpandaPlatform.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, appleAsset));
 
-appleAsset.UpdateActualValue(200);
+appleAsset.UpdateActualValue(524.26);
 
-bitpandaPlatform.AddTransaction(new Transaction(DateTime.Now, 10, TransactionType.Buy, appleAsset));
+bitpandaPlatform.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, appleAsset));
+appleAsset.UpdateActualValue(532.95);
 
+var profit = bitpandaPlatform.CalculateTotalProfitOrLoss();
 
 Console.WriteLine();
