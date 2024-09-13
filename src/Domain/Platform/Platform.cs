@@ -28,45 +28,45 @@ public class Platform(string name) : AggregateRoot<Guid>
     {
         var totalWallet = _transactions.Sum(transaction => transaction.Amount);
 
-        return totalWallet + CalculateTotalProfitOrLoss();
+        return Math.Round(totalWallet + CalculateTotalProfitOrLoss(), 2);
     }
 
     public double CalculateTotalProfitOrLoss()
     {
-        return _transactions.Sum(transaction =>
-            (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity);
+        return Math.Round(_transactions.Sum(transaction =>
+            (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity), 2);
     }
 
     public double CalculateTotalInvestment()
     {
         return _transactions.Sum(transaction => transaction.Amount);
     }
-
-    public Dictionary<int, double> EstimateRevenue(int[] years)
+    
+    public Dictionary<int, (double EstimatedValue, double PercentageChange)> EstimateFutureValuesWithPercentage(int[] years)
     {
-        var revenueEstimates = new Dictionary<int, double>();
+        var futureValues = new Dictionary<int, (double EstimatedValue, double PercentageChange)>();
+
+        var totalCurrentValue = CalculateTotalWallet();
 
         foreach (var year in years)
         {
-            double totalEstimatedRevenue = 0;
+            double totalFutureValue = 0;
 
             foreach (var transaction in _transactions)
             {
-                var yearsSinceTransaction = (DateTime.Now - transaction.Date).TotalDays / 365.25;
+                var asset = transaction.Asset;
+                var annualGrowthRate = asset.AveragePerformancePercent / 100;
 
-                var remainingYears = Math.Max(0, year - yearsSinceTransaction);
+                var futureValue = transaction.Amount * Math.Pow(1 + annualGrowthRate, year);
 
-                var projectedYears = yearsSinceTransaction + remainingYears;
-
-                var estimatedValue = transaction.Amount *
-                                     Math.Pow(1 + (transaction.Asset.AveragePerformancePercent / 100), projectedYears);
-
-                totalEstimatedRevenue += (estimatedValue - transaction.Amount);
+                totalFutureValue += futureValue;
             }
 
-            revenueEstimates[year] = totalEstimatedRevenue;
+            var percentageChange = ((totalFutureValue - totalCurrentValue) / totalCurrentValue) * 100;
+
+            futureValues[year] = (Math.Round(totalFutureValue, 2), Math.Round(percentageChange, 2));
         }
 
-        return revenueEstimates;
+        return futureValues;
     }
 }
