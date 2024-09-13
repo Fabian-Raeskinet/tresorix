@@ -1,11 +1,11 @@
 namespace Tresorix.Domain.Platform;
 
-public class Asset(string name, string? ticker, double actualValue, double AveragePerformancePercent) : Entity<Guid>
+public class Asset(string name, string ticker, double actualValue, double averageYearlyPerformancePercent) : Entity<Guid>
 {
-    public string? Name { get; private set; } = name;
-    public string? Ticker { get; private set; } = ticker;
+    public string Name { get; private set; } = name;
+    public string Ticker { get; private set; } = ticker;
     public double ActualValue { get; private set; } = actualValue;
-    public double AveragePerformancePercent { get; set; } = AveragePerformancePercent;
+    public double AverageYearlyPerformancePercent { get; set; } = averageYearlyPerformancePercent;
 
     public void UpdateActualValue(double newValue)
     {

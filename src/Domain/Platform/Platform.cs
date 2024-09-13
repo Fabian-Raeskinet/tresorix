@@ -55,7 +55,7 @@ public class Platform(string name) : AggregateRoot<Guid>
             foreach (var transaction in _transactions)
             {
                 var asset = transaction.Asset;
-                var annualGrowthRate = asset.AveragePerformancePercent / 100;
+                var annualGrowthRate = asset.AverageYearlyPerformancePercent / 100;
 
                 var futureValue = transaction.Amount * Math.Pow(1 + annualGrowthRate, year);
 
