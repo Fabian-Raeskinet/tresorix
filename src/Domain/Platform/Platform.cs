@@ -41,32 +41,35 @@ public class Platform(string name) : AggregateRoot<Guid>
     {
         return _transactions.Sum(transaction => transaction.Amount);
     }
-    
-    public Dictionary<int, (double EstimatedValue, double PercentageChange)> EstimateFutureValuesWithPercentage(int[] years)
+
+    public Dictionary<int, (double EstimatedValue, double PercentageChange)> EstimateFutureValues(int[] years)
     {
         var futureValues = new Dictionary<int, (double EstimatedValue, double PercentageChange)>();
-
         var totalCurrentValue = CalculateTotalWallet();
-
         foreach (var year in years)
         {
-            double totalFutureValue = 0;
-
-            foreach (var transaction in _transactions)
-            {
-                var asset = transaction.Asset;
-                var annualGrowthRate = asset.AverageYearlyPerformancePercent / 100;
-
-                var futureValue = transaction.Amount * Math.Pow(1 + annualGrowthRate, year);
-
-                totalFutureValue += futureValue;
-            }
-
-            var percentageChange = ((totalFutureValue - totalCurrentValue) / totalCurrentValue) * 100;
-
+            var totalFutureValue = CalculateTotalFutureValue(year);
+            var percentageChange = CalculatePercentageChange(totalFutureValue, totalCurrentValue);
             futureValues[year] = (Math.Round(totalFutureValue, 2), Math.Round(percentageChange, 2));
         }
 
         return futureValues;
+    }
+
+    private double CalculateTotalFutureValue(int year)
+    {
+        return _transactions.Sum(transaction => CalculateFutureValue(transaction, year));
+    }
+
+    private double CalculateFutureValue(Transaction transaction, int year)
+    {
+        var asset = transaction.Asset;
+        var annualGrowthRate = asset.AverageYearlyPerformancePercent / 100;
+        return transaction.Amount * Math.Pow(1 + annualGrowthRate, year);
+    }
+
+    private double CalculatePercentageChange(double totalFutureValue, double totalCurrentValue)
+    {
+        return ((totalFutureValue - totalCurrentValue) / totalCurrentValue) * 100;
     }
 }

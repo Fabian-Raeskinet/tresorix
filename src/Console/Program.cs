@@ -41,7 +41,7 @@ Console.WriteLine($"Wallet : {wallet}€");
 Console.WriteLine($"Investment : {totalInvestment}€");
 
 var years = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-var futureValuesWithPercentages = bitpanda.EstimateFutureValuesWithPercentage(years);
+var futureValuesWithPercentages = bitpanda.EstimateFutureValues(years);
 
 foreach (var entry in futureValuesWithPercentages)
 {
