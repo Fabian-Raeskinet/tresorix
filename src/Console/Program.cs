@@ -1,9 +1,9 @@
 ﻿using Tresorix.Domain.Platform;
 
-var sp500AccAsset = new Asset("S&P500 x Acc", "SP500", 532.62);
-var sp500Asset = new Asset("S&P500", "SP500", 50.12);
-var sp500EsgAsset = new Asset("S&P500 ESG", "SP500", 69.22);
-var nasdaqAsset = new Asset("Nasdaq", "Nas", 997.85);
+var sp500AccAsset = new Asset("S&P500 x Acc", "SP500", 534.93);
+var sp500Asset = new Asset("S&P500", "SP500", 50.34);
+var sp500EsgAsset = new Asset("S&P500 ESG", "SP500", 69.51);
+var nasdaqAsset = new Asset("Nasdaq", "Nas", 1002.90);
 
 var bitpanda = new Platform("Bitpanda");
 
@@ -24,5 +24,6 @@ bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, n
 
 var profit = bitpanda.CalculateTotalProfitOrLoss();
 var wallet = bitpanda.CalculateTotalWallet();
+var totalInvestment = bitpanda.CalculateTotalInvestment();
 
 Console.WriteLine();

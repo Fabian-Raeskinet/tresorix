@@ -26,26 +26,18 @@ public class Platform(string name) : AggregateRoot<Guid>
 
     public double CalculateTotalWallet()
     {
-        double totalWallet = 0;
-        foreach (var transaction in _transactions)
-        {
-            totalWallet += transaction.Amount;
-        }
+        var totalWallet = _transactions.Sum(transaction => transaction.Amount);
 
         return totalWallet + CalculateTotalProfitOrLoss();
     }
 
     public double CalculateTotalProfitOrLoss()
     {
-        double totalProfitOrLoss = 0;
+        return _transactions.Sum(transaction => (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity);
+    }
 
-        foreach (var transaction in _transactions)
-        {
-            var profitOrLoss = (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity;
-
-            totalProfitOrLoss += profitOrLoss;
-        }
-
-        return totalProfitOrLoss;
+    public double CalculateTotalInvestment()
+    {
+        return _transactions.Sum(transaction => transaction.Amount);
     }
 }
