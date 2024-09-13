@@ -33,11 +33,40 @@ public class Platform(string name) : AggregateRoot<Guid>
 
     public double CalculateTotalProfitOrLoss()
     {
-        return _transactions.Sum(transaction => (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity);
+        return _transactions.Sum(transaction =>
+            (transaction.Asset.ActualValue - transaction.PriceAtBuy) * transaction.Quantity);
     }
 
     public double CalculateTotalInvestment()
     {
         return _transactions.Sum(transaction => transaction.Amount);
+    }
+
+    public Dictionary<int, double> EstimateRevenue(int[] years)
+    {
+        var revenueEstimates = new Dictionary<int, double>();
+
+        foreach (var year in years)
+        {
+            double totalEstimatedRevenue = 0;
+
+            foreach (var transaction in _transactions)
+            {
+                var yearsSinceTransaction = (DateTime.Now - transaction.Date).TotalDays / 365.25;
+
+                var remainingYears = Math.Max(0, year - yearsSinceTransaction);
+
+                var projectedYears = yearsSinceTransaction + remainingYears;
+
+                var estimatedValue = transaction.Amount *
+                                     Math.Pow(1 + (transaction.Asset.AveragePerformancePercent / 100), projectedYears);
+
+                totalEstimatedRevenue += (estimatedValue - transaction.Amount);
+            }
+
+            revenueEstimates[year] = totalEstimatedRevenue;
+        }
+
+        return revenueEstimates;
     }
 }

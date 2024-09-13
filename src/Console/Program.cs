@@ -1,16 +1,15 @@
 ﻿using Tresorix.Domain.Platform;
 
-var sp500AccAsset = new Asset("S&P500 x Acc", "SP500", 534.93);
-var sp500Asset = new Asset("S&P500", "SP500", 50.34);
-var sp500EsgAsset = new Asset("S&P500 ESG", "SP500", 69.51);
-var nasdaqAsset = new Asset("Nasdaq", "Nas", 1002.90);
+var sp500AccAsset = new Asset("S&P500 x Acc", "SP500", 534.93, 10.0);
+var sp500Asset = new Asset("S&P500", "SP500", 50.34, 10.0);
+var sp500EsgAsset = new Asset("S&P500 ESG", "SP500", 69.51, 10.0);
+var nasdaqAsset = new Asset("Nasdaq", "Nas", 1002.90, 10.0);
 
 var bitpanda = new Platform("Bitpanda");
 
 bitpanda.AddAsset(sp500AccAsset);
 bitpanda.AddAsset(sp500Asset);
 bitpanda.AddAsset(sp500EsgAsset);
-bitpanda.AddAsset(nasdaqAsset);
 
 bitpanda.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, sp500AccAsset, 537.82));
 bitpanda.AddTransaction(new Transaction(DateTime.Now, 350, TransactionType.Buy, sp500AccAsset, 524.26));
@@ -25,5 +24,16 @@ bitpanda.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, n
 var profit = bitpanda.CalculateTotalProfitOrLoss();
 var wallet = bitpanda.CalculateTotalWallet();
 var totalInvestment = bitpanda.CalculateTotalInvestment();
+
+Console.WriteLine($"Profit : {profit}€");
+Console.WriteLine($"Wallet : {wallet}€");
+Console.WriteLine($"Investment : {totalInvestment}€");
+
+var revenueEstimates = bitpanda.EstimateRevenue(new int[] { 5, 10, 15 });
+
+foreach (var estimate in revenueEstimates)
+{
+    Console.WriteLine($"Estimation du revenu après {estimate.Key} ans : {estimate.Value} €");
+}
 
 Console.WriteLine();
