@@ -1,6 +1,11 @@
-namespace Api.Controllers;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
-public class AssetController
+namespace Tresorix.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public partial class AssetController(IMediator mediator) : ControllerBase
 {
-    
+    public IMediator Mediator { get; set; } = mediator;
 }

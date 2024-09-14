@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <AssemblyName>Tresorix.Api</AssemblyName>
+        <RootNamespace>Tresorix.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

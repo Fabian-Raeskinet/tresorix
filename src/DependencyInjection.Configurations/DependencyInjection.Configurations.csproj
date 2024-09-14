@@ -4,6 +4,8 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyName>Tresorix.DependencyInjection.Configurations</AssemblyName>
+        <RootNamespace>Tresorix.DependencyInjection.Configurations</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

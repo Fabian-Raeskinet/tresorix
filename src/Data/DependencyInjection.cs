@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tresorix.Domain;
+using Tresorix.Data.Assets;
+using Tresorix.Domain.Platform;
 
 namespace Tresorix.Data;
 
@@ -17,6 +18,8 @@ public static class DependencyInjection
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
+        services.AddScoped<IAssetRepository, AssetRepository>();
+
         return services;
     }
 
@@ -24,7 +27,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContext<TresorixContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<ITresorixContext>(provider => provider.GetRequiredService<TresorixContext>());
 

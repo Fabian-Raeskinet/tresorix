@@ -21,6 +21,7 @@ public class Platform(string name) : AggregateRoot<Guid>
             throw new InvalidOperationException("Asset not found on this platform.");
         }
 
+        transaction.SetPlatform(this);
         _transactions.Add(transaction);
     }
 

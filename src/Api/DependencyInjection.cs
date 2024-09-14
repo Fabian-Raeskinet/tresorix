@@ -1,7 +1,6 @@
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Newtonsoft.Json.Converters;
 
-namespace Api;
+namespace Tresorix.Api;
 
 public static class DependencyInjection
 {
