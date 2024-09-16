@@ -13,6 +13,11 @@ public class AssetRepository(ITresorixContext context) : IAssetRepository
             .ToListAsync();
     }
 
+    public async Task<Asset> GetById(Guid id)
+    {
+        return await Context.Assets.FirstAsync(x => x.Id == id);
+    }
+
     public async Task CreateAsync(Asset asset)
     {
         await Context.Assets.AddAsync(asset);
