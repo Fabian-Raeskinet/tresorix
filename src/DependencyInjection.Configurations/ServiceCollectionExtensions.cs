@@ -11,5 +11,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddInfrastructureServices(configuration);
         services.AddApplicationServices();
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

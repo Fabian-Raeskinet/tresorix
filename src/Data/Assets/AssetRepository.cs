@@ -3,9 +3,9 @@ using Tresorix.Domain.Platform;
 
 namespace Tresorix.Data.Assets;
 
-public class AssetRepository(TresorixContext context) : IAssetRepository
+public class AssetRepository(ITresorixContext context) : IAssetRepository
 {
-    public TresorixContext Context { get; set; } = context;
+    public ITresorixContext Context { get; set; } = context;
     
     public async Task<IEnumerable<Asset>> GetAllAsync()
     {
@@ -16,11 +16,5 @@ public class AssetRepository(TresorixContext context) : IAssetRepository
     public async Task CreateAsync(Asset asset)
     {
         await Context.Assets.AddAsync(asset);
-        await SaveChanges();
-    }
-    
-    private async Task SaveChanges()
-    {
-        await Context.SaveChangesAsync();
     }
 }
