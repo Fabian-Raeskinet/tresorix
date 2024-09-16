@@ -15,4 +15,13 @@ public partial class PlatformController
         var results = await Mediator.Send(request);
         return Ok(results);
     }
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<PlatformResponse>), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetAll()
+    {
+        var request = new GetPlatformsQueryRequest();
+        var results = await Mediator.Send(request);
+        return Ok(results);
+    }
 }

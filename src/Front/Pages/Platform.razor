@@ -1,0 +1,54 @@
+@page "/platforms"
+@using Front.Components
+@using Tresorix.Contracts.Platforms
+@inject HttpClient Http
+
+<PageTitle>Platforms</PageTitle>
+
+<h1>Platforms</h1>
+
+@if (_platforms == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var platform in _platforms)
+        {
+            <tr @onclick="() => ToggleDetails(platform)">
+                <td>@platform.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    if (_selectedPlatform is not null)
+    {
+        <PlatformDetails Platform="@_selectedPlatform"></PlatformDetails>
+    }
+}
+
+@code {
+    private PlatformResponse[]? _platforms;
+    private PlatformResponse? _selectedPlatform;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _platforms = await Http.GetFromJsonAsync<PlatformResponse[]>("api/Platform");
+    }
+
+    private void ToggleDetails(PlatformResponse platform)
+    {
+        _selectedPlatform = platform;
+    }
+
+}

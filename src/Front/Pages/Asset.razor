@@ -1,0 +1,49 @@
+@page "/assets"
+@using Tresorix.Contracts.Assets
+@inject HttpClient Http
+
+<PageTitle>Assets</PageTitle>
+
+<h1>Weather</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (_assets == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Ticker</th>
+            <th>Actual Value</th>
+            <th>AverageYearlyPerformancePercent</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var asset in _assets)
+        {
+            <tr>
+                <td>@asset.Name</td>
+                <td>@asset.Ticker</td>
+                <td>@asset.ActualValue</td>
+                <td>@asset.AverageYearlyPerformancePercent</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    private AssetResponse[]? _assets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _assets = await Http.GetFromJsonAsync<AssetResponse[]>("api/Asset");
+    }
+}

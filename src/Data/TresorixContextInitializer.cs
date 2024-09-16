@@ -53,6 +53,14 @@ public class TresorixContextInitializer(TresorixContext context)
                 nasdaqAsset, 1004.72));
             Context.Platforms.Add(platform);
 
+            var tradeRepublic = new Platform("Trade Republic");
+
+            Context.Platforms.Add(tradeRepublic);
+            
+            tradeRepublic.AddAsset(nasdaqAsset);
+            
+            tradeRepublic.AddTransaction(new Transaction(DateTime.Now, 50, TransactionType.Buy, nasdaqAsset, 1000));
+
             await Context.SaveChangesAsync();
         }
     }

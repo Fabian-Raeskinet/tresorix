@@ -1,0 +1,49 @@
+@using Tresorix.Contracts.Platforms
+<h3>PlatformDetails</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Ticker</th>
+        <th>Actual Value</th>
+        <th>AverageYearlyPerformancePercent</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var asset in Platform.Assets)
+    {
+        <tr>
+            <td>@asset.Name</td>
+            <td>@asset.Ticker</td>
+            <td>@asset.ActualValue</td>
+            <td>@asset.AverageYearlyPerformancePercent</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>PriceAtBuy</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var transaction in Platform.Transactions)
+    {
+        <tr>
+            <td>@transaction.Amount</td>
+            <td>@transaction.Date</td>
+            <td>@transaction.Quantity</td>
+            <td>@transaction.PriceAtBuy</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    [Parameter] public required PlatformResponse Platform { get; set; }
+}
