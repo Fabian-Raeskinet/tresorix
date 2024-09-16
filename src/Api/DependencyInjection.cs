@@ -23,6 +23,16 @@ public static class DependencyInjection
 
     private static void AddControllerConfiguration(this IServiceCollection services)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", builder =>
+            {
+                builder.WithOrigins("http://localhost:5015") // Ou l'URL de votre frontend
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+        
         services.AddControllers()
             .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true)
             .AddNewtonsoftJson(options => { options.SerializerSettings.Converters.Add(new StringEnumConverter()); });
