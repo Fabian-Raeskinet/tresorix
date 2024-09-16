@@ -19,6 +19,7 @@ public static class DependencyInjection
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IAssetRepository, AssetRepository>();
+        services.AddScoped<IPlatformRepository, PlatformRepository>();
 
         return services;
     }
@@ -30,6 +31,8 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<ITresorixContext>(provider => provider.GetRequiredService<TresorixContext>());
+
+        services.AddScoped<TresorixContextInitializer>();
 
         return services;
     }

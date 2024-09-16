@@ -1,4 +1,5 @@
 using Tresorix.Api;
+using Tresorix.Data;
 using Tresorix.DependencyInjection.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
+    using var scope = app.Services.CreateScope();
+    var initializer = scope.ServiceProvider.GetRequiredService<TresorixContextInitializer>();
+    await initializer.InitialiseAsync();
+    await initializer.TrySeedAsync();
 }
 
 app.UseHttpsRedirection();
