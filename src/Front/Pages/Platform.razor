@@ -1,6 +1,7 @@
 @page "/platforms"
 @using Front.Components
 @using Tresorix.Contracts.Platforms
+@using System.Web
 @inject HttpClient Http
 
 <PageTitle>Platforms</PageTitle>
@@ -33,21 +34,27 @@ else
 
     if (_selectedPlatform is not null)
     {
-        <PlatformDetails Platform="@_selectedPlatform"></PlatformDetails>
+        <PlatformDetails PlatformPredictions="@_predictions" Platform="@_selectedPlatform"></PlatformDetails>
     }
 }
 
 @code {
     private PlatformResponse[]? _platforms;
     private PlatformResponse? _selectedPlatform;
+    private PlatformPredictionResponse[]? _predictions;
 
     protected override async Task OnInitializedAsync()
     {
         _platforms = await Http.GetFromJsonAsync<PlatformResponse[]>("api/Platform");
     }
 
-    private void ToggleDetails(PlatformResponse platform)
+    private async Task ToggleDetails(PlatformResponse platform)
     {
+        var years = new[] { 1, 2, 3, 4, 5 };
+
+        var query = string.Join("&", years.Select(year => $"years={year}"));
+        _predictions = await Http.GetFromJsonAsync<PlatformPredictionResponse[]>($"api/Platform/{platform.Id}?{query}");
+
         _selectedPlatform = platform;
     }
 

@@ -43,7 +43,27 @@
     }
     </tbody>
 </table>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Year</th>
+        <th>EstimatedAmount</th>
+        <th>EstimatedPercentageChange</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var transaction in PlatformPredictions)
+    {
+        <tr>
+            <td>@transaction.Year</td>
+            <td>@transaction.EstimatedAmount</td>
+            <td>@transaction.EstimatedPercentageChange</td>
+        </tr>
+    }
+    </tbody>
+</table>
 
 @code {
     [Parameter] public required PlatformResponse Platform { get; set; }
+    [Parameter] public required PlatformPredictionResponse[] PlatformPredictions { get; set; }
 }
