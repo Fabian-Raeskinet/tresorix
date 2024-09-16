@@ -2,10 +2,9 @@ using Tresorix.Domain.Platform;
 
 namespace Tresorix.Services.Assets;
 
-public class CreateNewAssetCommandHandler(IAssetRepository assetRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateNewAssetCommandRequest>
+public class CreateNewAssetCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<CreateNewAssetCommandRequest>
 {
-    public IUnitOfWork UnitOfWork { get; set; } = unitOfWork;
+    private IUnitOfWork UnitOfWork { get; } = unitOfWork;
 
     public async Task Handle(CreateNewAssetCommandRequest request, CancellationToken cancellationToken)
     {

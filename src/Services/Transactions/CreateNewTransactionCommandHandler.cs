@@ -5,7 +5,7 @@ namespace Tresorix.Services.Transactions;
 public class CreateNewTransactionCommandHandler(IUnitOfWork unitOfWork)
     : ICommandHandler<CreateNewTransactionCommandRequest>
 {
-    public IUnitOfWork UnitOfWork { get; set; } = unitOfWork;
+    private IUnitOfWork UnitOfWork { get; } = unitOfWork;
 
     public async Task Handle(CreateNewTransactionCommandRequest request, CancellationToken cancellationToken)
     {
