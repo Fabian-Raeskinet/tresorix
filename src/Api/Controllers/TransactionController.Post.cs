@@ -17,7 +17,6 @@ public partial class TransactionController
         {
             Date = command.Date,
             Amount = command.Amount,
-            Quantity = command.Quantity,
             PriceAtBuy = command.PriceAtBuy,
             Type = command.Type,
             AssetId = command.AssetId,
