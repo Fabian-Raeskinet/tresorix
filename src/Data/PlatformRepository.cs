@@ -10,7 +10,9 @@ public class PlatformRepository(ITresorixContext context) : IPlatformRepository
     public async Task<Platform> GetById(Guid id)
     {
         return await Context.Platforms
-            .Include(x => x.Assets).FirstAsync(x => x.Id == id);
+            .Include(x => x.Assets)
+            .Include(x => x.Transactions)
+            .FirstAsync(x => x.Id == id);
     }
 
     public void UpdateAsync(Platform platform)

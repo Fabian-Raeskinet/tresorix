@@ -62,11 +62,16 @@ public class Platform(string name) : AggregateRoot<Guid>
         return _transactions.Sum(transaction => CalculateFutureValue(transaction, year));
     }
 
-    private double CalculateFutureValue(Transaction transaction, int year)
+    private double CalculateFutureValue(Transaction transaction, int futureYearsFromNow)
     {
         var asset = transaction.Asset;
         var annualGrowthRate = asset.AverageYearlyPerformancePercent / 100;
-        return transaction.Amount * Math.Pow(1 + annualGrowthRate, year);
+        
+        var yearsSincePurchase = (DateTime.Now - transaction.Date).TotalDays / 365.25;
+
+        var totalYears = yearsSincePurchase + futureYearsFromNow;
+
+        return transaction.Amount * Math.Pow(1 + annualGrowthRate, totalYears);
     }
 
     private double CalculatePercentageChange(double totalFutureValue, double totalCurrentValue)

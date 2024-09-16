@@ -11,8 +11,8 @@ public partial class AssetController
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetAllDisks()
     {
-        var query = new GetAssetsQueryRequest();
-        var results = await Mediator.Send(query);
+        var request = new GetAssetsQueryRequest();
+        var results = await Mediator.Send(request);
         return Ok(results);
     }
 }
