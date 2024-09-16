@@ -2,8 +2,7 @@ using Tresorix.Domain.Platform;
 
 namespace Tresorix.Services.Transactions;
 
-public class CreateNewTransactionCommandHandler(IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateNewTransactionCommandRequest>
+public class CreateNewTransactionCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<CreateNewTransactionCommandRequest>
 {
     private IUnitOfWork UnitOfWork { get; } = unitOfWork;
 
