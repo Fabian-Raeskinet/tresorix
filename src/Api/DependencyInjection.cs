@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Converters;
+using Tresorix.Api.Filters;
 
 namespace Tresorix.Api;
 
@@ -14,7 +15,10 @@ public static class DependencyInjection
 
     private static void AddMvcConfiguration(this IServiceCollection services)
     {
-        services.AddMvc();
+        services.AddMvc(options =>
+        {
+            options.Filters.Add<ApiExceptionFilterAttribute>();
+        });
     }
 
     private static void AddControllerConfiguration(this IServiceCollection services)

@@ -16,6 +16,7 @@ public static class DependencyInjection
     private static IServiceCollection AddMediatRServices(this IServiceCollection services)
     {
         services.AddMediatR(config => config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         services.AddScoped<IDomainEventDispatcher, MediatRDomainEventDispatcher>();
 
         return services;

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Tresorix.Contracts.Validators;
 using Tresorix.Data;
 using Tresorix.Services;
 
@@ -11,6 +12,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddInfrastructureServices(configuration);
         services.AddApplicationServices();
+        services.AddContractValidators();
         
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
