@@ -1,69 +1,40 @@
 @using Tresorix.Contracts.Platforms
 <h3>PlatformDetails</h3>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Ticker</th>
-        <th>Actual Value</th>
-        <th>AverageYearlyPerformancePercent</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var asset in Platform.Assets)
-    {
+
+    <table class="table">
+        <thead>
         <tr>
-            <td>@asset.Name</td>
-            <td>@asset.Ticker</td>
-            <td>@asset.ActualValue</td>
-            <td>@asset.AverageYearlyPerformancePercent</td>
+            <th>Name</th>
+            <th>TotalWallet</th>
+            <th>TotalInvestment</th>
+            <td>TotalProfit</td>
+            <td>PercentageProfit</td>
         </tr>
-    }
-    </tbody>
-</table>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Amount</th>
-        <th>Date</th>
-        <th>Quantity</th>
-        <th>PriceAtBuy</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var transaction in Platform.Transactions)
-    {
-        <tr>
-            <td>@transaction.Amount</td>
-            <td>@transaction.Date</td>
-            <td>@transaction.Quantity</td>
-            <td>@transaction.PriceAtBuy</td>
-        </tr>
-    }
-    </tbody>
-</table>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Year</th>
-        <th>EstimatedAmount</th>
-        <th>EstimatedPercentageChange</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var transaction in PlatformPredictions)
-    {
-        <tr>
-            <td>@transaction.Year</td>
-            <td>@transaction.EstimatedAmount</td>
-            <td>@transaction.EstimatedPercentageChange</td>
-        </tr>
-    }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach (var platform in Platforms)
+        {
+            <tr @onclick="() => ToggleDetails(platform)">
+                <td>@platform.Name</td>
+                <td>@platform.TotalWallet</td>
+                <td>@platform.TotalInvestment</td>
+                <td>@platform.TotalProfit</td>
+                <td>@platform.PercentageProfit</td>
+            </tr>
+        }
+        </tbody>
+    </table>
 
 @code {
-    [Parameter] public required PlatformResponse Platform { get; set; }
-    [Parameter] public required PlatformPredictionResponse[] PlatformPredictions { get; set; }
+    [Parameter] public required List<PlatformResponse> Platforms { get; set; }
+    [Parameter] public EventCallback<PlatformResponse> OnToggleDetails { get; set; }
+    
+    private async Task ToggleDetails(PlatformResponse platform)
+    {
+        if (OnToggleDetails.HasDelegate)
+        {
+            await OnToggleDetails.InvokeAsync(platform);
+        }
+    }
 }

@@ -1,7 +1,6 @@
 @page "/platforms"
 @using Front.Components
 @using Tresorix.Contracts.Platforms
-@using System.Web
 @inject HttpClient Http
 
 <PageTitle>Platforms</PageTitle>
@@ -16,33 +15,16 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>TotalWallet</th>
-            <th>TotalInvestment</th>
-            <td>TotalProfit</td>
-            <td>PercentageProfit</td>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var platform in _platforms)
-        {
-            <tr @onclick="() => ToggleDetails(platform)">
-                <td>@platform.Name</td>
-                <td>@platform.TotalWallet</td>
-                <td>@platform.TotalInvestment</td>
-                <td>@platform.TotalProfit</td>
-                <td>@platform.PercentageProfit</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
+    <PlatformDetails Platforms="@_platforms.ToList()" OnToggleDetails="ToggleDetails"></PlatformDetails>
     if (_selectedPlatform is not null)
     {
-        <PlatformDetails PlatformPredictions="@_predictions" Platform="@_selectedPlatform"></PlatformDetails>
+        <AssetDetails Assets="@_selectedPlatform.Assets"></AssetDetails>
+        <TransactionDetails Transactions="@_selectedPlatform.Transactions"></TransactionDetails>
+
+        @if (_predictions is not null)
+        {
+            <PlatformPredictionDetails PlatformPredictions="@_predictions.ToList()"></PlatformPredictionDetails>
+        }
     }
 }
 

@@ -1,0 +1,27 @@
+@using Tresorix.Contracts.Platforms
+<h3>PlatformPredictionDetails</h3>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Year</th>
+        <th>EstimatedAmount</th>
+        <th>EstimatedPercentageChange</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var prediction in PlatformPredictions)
+    {
+        <tr>
+            <td>@prediction.Year</td>
+            <td>@prediction.EstimatedAmount</td>
+            <td>@prediction.EstimatedPercentageChange</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+
+    [Parameter] public required List<PlatformPredictionResponse> PlatformPredictions { get; set; }
+}

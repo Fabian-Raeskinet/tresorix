@@ -1,0 +1,28 @@
+@using Tresorix.Contracts.Transactions
+<h3>TransactionDetails</h3>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th>PriceAtBuy</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var transaction in Transactions)
+    {
+        <tr>
+            <td>@transaction.Amount</td>
+            <td>@transaction.Date</td>
+            <td>@transaction.Quantity</td>
+            <td>@transaction.PriceAtBuy</td>
+        </tr>
+    }
+    </tbody>
+</table>
+@code {
+    [Parameter] public required List<TransactionResponse> Transactions { get; set; }
+}
