@@ -28,13 +28,13 @@
 
 @code {
     [Parameter] public required List<PlatformResponse> Platforms { get; set; }
-    [Parameter] public EventCallback<PlatformResponse> OnToggleDetails { get; set; }
+    [Parameter] public EventCallback<PlatformResponse> OnLoadPlatformDetails { get; set; }
     
     private async Task ToggleDetails(PlatformResponse platform)
     {
-        if (OnToggleDetails.HasDelegate)
+        if (OnLoadPlatformDetails.HasDelegate)
         {
-            await OnToggleDetails.InvokeAsync(platform);
+            await OnLoadPlatformDetails.InvokeAsync(platform);
         }
     }
 }

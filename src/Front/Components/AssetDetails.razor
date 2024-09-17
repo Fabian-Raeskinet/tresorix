@@ -22,7 +22,7 @@
         </tr>
     }
 
-    @if (IsAddingAsset)
+    @if (IsAdding)
     {
         <tr>
             <td>
@@ -42,15 +42,19 @@
     </tbody>
 </table>
 
-<button class="btn btn-primary" @onclick="SaveAsset">
-    @(IsAddingAsset ? "Save Asset" : "Add Asset")
-</button>
+@if (!IsAdding)
+{
+    <button class="btn btn-primary" @onclick="OnAdd">Add Asset</button>
+}
+else
+{
+    <button class="btn btn-success" @onclick="OnSave">Save Asset</button>
+}
 
 @code {
     [Parameter] public required List<AssetResponse> Assets { get; set; }
-    [Parameter] public required bool IsAddingAsset { get; set; }
-    [Parameter] public required CreateNewAsset NewAsset { get; set; }
-    [Parameter] public EventCallback SaveAsset { get; set; }
-
-
+    [Parameter] public required bool IsAdding { get; set; }
+    [Parameter] public required NewAsset NewAsset { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnAdd { get; set; }
 }

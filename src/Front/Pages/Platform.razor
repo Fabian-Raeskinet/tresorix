@@ -17,10 +17,15 @@
 }
 else
 {
-    <PlatformDetails Platforms="@_platforms.ToList()" OnToggleDetails="ToggleDetails"></PlatformDetails>
+    <PlatformDetails Platforms="@_platforms.ToList()" OnLoadPlatformDetails="LoadPlatformDetails"></PlatformDetails>
     if (_selectedPlatform is not null)
     {
-        <AssetDetails Assets="@_selectedPlatform.Assets" SaveAsset="@ToggleAddAsset" NewAsset="@_newAsset" IsAddingAsset="@_isAddingAsset"></AssetDetails>
+        <AssetDetails Assets="@_selectedPlatform.Assets"
+                      OnSave="SaveAsset"
+                      OnAdd="ToggleAddAsset"
+                      NewAsset="@_newAsset"
+                      IsAdding="@_isAddingAsset">
+        </AssetDetails>
         <TransactionDetails Transactions="@_selectedPlatform.Transactions"></TransactionDetails>
 
         @if (_predictions is not null)
@@ -34,7 +39,7 @@ else
     private PlatformResponse[]? _platforms;
     private PlatformResponse? _selectedPlatform;
     private PlatformPredictionResponse[]? _predictions;
-    private CreateNewAsset _newAsset = new();
+    private NewAsset _newAsset = new();
     private bool _isAddingAsset;
 
     protected override async Task OnInitializedAsync()
@@ -42,7 +47,7 @@ else
         _platforms = await Http.GetFromJsonAsync<PlatformResponse[]>("api/Platform");
     }
 
-    private async Task ToggleDetails(PlatformResponse platform)
+    private async Task LoadPlatformDetails(PlatformResponse platform)
     {
         var years = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
@@ -52,47 +57,30 @@ else
         _selectedPlatform = platform;
     }
 
-    private async Task ToggleAddAsset()
+    private void ToggleAddAsset()
     {
-        if (_isAddingAsset)
-        {
-            await SaveNewAsset();
-        }
-        else
-        {
-            _newAsset = new CreateNewAsset();
-            _isAddingAsset = true;
-        }
+        _isAddingAsset = !_isAddingAsset;
+        _newAsset = new NewAsset();
     }
 
-    private async Task SaveNewAsset()
+    private async Task SaveAsset()
     {
-        try
-        {
-            if (string.IsNullOrEmpty(_newAsset.Name) || string.IsNullOrEmpty(_newAsset.Ticker))
-                return;
+        if (string.IsNullOrEmpty(_newAsset.Name) || string.IsNullOrEmpty(_newAsset.Ticker))
+            return;
 
-            var payload = new CreateNewAssetCommand
-            {
-                Name = _newAsset.Name,
-                Ticker = _newAsset.Ticker,
-                ActualValue = _newAsset.ActualValue,
-                AverageYearlyPerformancePercent = _newAsset.AverageYearlyPerformancePercent,
-                PlatformId = _selectedPlatform!.Id
-            };
-            var response = await Http.PostAsJsonAsync("api/Asset", payload);
-            if (response.IsSuccessStatusCode)
-            {
-                _newAsset = new CreateNewAsset();
-            }
-            else
-            {
-                Console.WriteLine("Error saving asset");
-            }
-        }
-        catch (Exception ex)
+        var newAssetCommand = new CreateNewAssetCommand
         {
-            Console.WriteLine($"Exception: {ex.Message}");
+            Name = _newAsset.Name,
+            Ticker = _newAsset.Ticker,
+            ActualValue = _newAsset.ActualValue,
+            AverageYearlyPerformancePercent = _newAsset.AverageYearlyPerformancePercent,
+            PlatformId = _selectedPlatform!.Id
+        };
+        var response = await Http.PostAsJsonAsync("api/Asset", newAssetCommand);
+        if (response.IsSuccessStatusCode)
+        {
+            _newAsset = new NewAsset();
+            _platforms = await Http.GetFromJsonAsync<PlatformResponse[]>("api/Platform");
         }
     }
 
