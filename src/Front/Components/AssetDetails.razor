@@ -1,12 +1,14 @@
 @using Tresorix.Contracts.Assets
+@using Front.Models
 <h3>AssetDetails</h3>
+
 <table class="table">
     <thead>
     <tr>
         <th>Name</th>
         <th>Ticker</th>
         <th>Actual Value</th>
-        <th>AverageYearlyPerformancePercent</th>
+        <th>Average Yearly Performance Percent</th>
     </tr>
     </thead>
     <tbody>
@@ -19,8 +21,36 @@
             <td>@asset.AverageYearlyPerformancePercent</td>
         </tr>
     }
+
+    @if (IsAddingAsset)
+    {
+        <tr>
+            <td>
+                <input @bind="NewAsset.Name" placeholder="Enter name" class="form-control"/>
+            </td>
+            <td>
+                <input @bind="NewAsset.Ticker" placeholder="Enter ticker" class="form-control"/>
+            </td>
+            <td>
+                <input @bind="NewAsset.ActualValue" placeholder="Enter actual value" class="form-control"/>
+            </td>
+            <td>
+                <input @bind="NewAsset.AverageYearlyPerformancePercent" placeholder="Enter performance" class="form-control"/>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
+
+<button class="btn btn-primary" @onclick="SaveAsset">
+    @(IsAddingAsset ? "Save Asset" : "Add Asset")
+</button>
+
 @code {
     [Parameter] public required List<AssetResponse> Assets { get; set; }
+    [Parameter] public required bool IsAddingAsset { get; set; }
+    [Parameter] public required CreateNewAsset NewAsset { get; set; }
+    [Parameter] public EventCallback SaveAsset { get; set; }
+
+
 }

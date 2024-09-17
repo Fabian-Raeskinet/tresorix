@@ -8,10 +8,14 @@ public class CreateNewAssetCommandHandler(IUnitOfWork unitOfWork) : ICommandHand
 
     public async Task Handle(CreateNewAssetCommandRequest request, CancellationToken cancellationToken)
     {
+        var platform = await UnitOfWork.PlatformRepository.GetById(request.PlatformId);
+        
         var asset = new Asset(request.Name, request.Ticker, request.ActualValue,
             request.AverageYearlyPerformancePercent);
+        
+        platform.AddAsset(asset);
 
-        await UnitOfWork.AssetRepository.CreateAsync(asset);
+        UnitOfWork.PlatformRepository.UpdateAsync(platform);
         await UnitOfWork.CommitAsync();
     }
 }

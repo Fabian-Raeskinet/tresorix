@@ -13,8 +13,11 @@ public partial class AssetController
     {
         var request = new CreateNewAssetCommandRequest
         {
-            Name = command.Name, Ticker = command.Ticker, ActualValue = command.ActualValue,
-            AverageYearlyPerformancePercent = command.AverageYearlyPerformancePercent
+            Name = command.Name,
+            Ticker = command.Ticker,
+            ActualValue = command.ActualValue,
+            AverageYearlyPerformancePercent = command.AverageYearlyPerformancePercent,
+            PlatformId = command.PlatformId
         };
         await Mediator.Send(request);
         return NoContent();
