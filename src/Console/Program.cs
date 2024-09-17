@@ -40,14 +40,15 @@ Console.WriteLine($"Profit : {profit}€");
 Console.WriteLine($"Wallet : {wallet}€");
 Console.WriteLine($"Investment : {totalInvestment}€");
 
-var years = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-var futureValuesWithPercentages = bitpanda.EstimateFutureValues(years);
+var years = new int[] { 1, 2, 3, 4, 5 };
+var futureValues = bitpanda.SimulateTransactionGrow(years);
+var futurePercentage = bitpanda.SimulateNetPercentageGrow(years);
 
-foreach (var entry in futureValuesWithPercentages)
+foreach (var year in years)
 {
-    Console.WriteLine($"Dans {entry.Key} ans :");
-    Console.WriteLine($"  Valeur estimée : {entry.Value.EstimatedValue} €");
-    Console.WriteLine($"  Pourcentage de changement : {entry.Value.PercentageChange} %");
+    Console.WriteLine($"Dans {year} ans :");
+    Console.WriteLine($"  Valeur estimée : {futureValues[year]} €");
+    Console.WriteLine($"  Pourcentage de changement : {futurePercentage[year]} %");
 }
 
 Console.WriteLine();

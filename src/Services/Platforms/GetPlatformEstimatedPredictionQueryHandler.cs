@@ -11,9 +11,10 @@ public class GetPlatformEstimatedPredictionQueryHandler(IUnitOfWork unitOfWork)
     {
         var platform = await UnitOfWork.PlatformRepository.GetById(request.PlatformId);
 
-        var futureValues = platform.EstimateFutureValues(request.Years);
-        var estimatedPredictions = futureValues.Select(kv =>
-            new PlatformPredictionResponse { Year = kv.Key, EstimatedAmount = kv.Value.EstimatedValue, EstimatedPercentageChange = kv.Value.PercentageChange });
+        var futureValues = platform.SimulateTransactionGrow(request.Years);
+        var futurePercentage = platform.SimulateNetPercentageGrow(request.Years);
+        var estimatedPredictions = request.Years.Select(year =>
+            new PlatformPredictionResponse { Year = year, EstimatedAmount = futureValues[year], EstimatedPercentageChange = futurePercentage[year] });
         return estimatedPredictions;
     }
 }

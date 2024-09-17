@@ -43,39 +43,56 @@ public class Platform(string name) : AggregateRoot<Guid>
         return _transactions.Sum(transaction => transaction.Amount);
     }
 
-    public Dictionary<int, (double EstimatedValue, double PercentageChange)> EstimateFutureValues(int[] years)
+
+    public Dictionary<int, double> SimulateTransactionGrow(int[] yearsToSimulate)
     {
-        var futureValues = new Dictionary<int, (double EstimatedValue, double PercentageChange)>();
-        var totalCurrentValue = CalculateTotalWallet();
-        foreach (var year in years)
+        var simulationResults = new Dictionary<int, double>();
+
+        foreach (var year in yearsToSimulate)
         {
-            var totalFutureValue = CalculateTotalFutureValue(year);
-            var percentageChange = CalculatePercentageChange(totalFutureValue, totalCurrentValue);
-            futureValues[year] = (Math.Round(totalFutureValue, 2), Math.Round(percentageChange, 2));
+            simulationResults[year] = (0);
         }
 
-        return futureValues;
+        foreach (var transaction in _transactions)
+        {
+            var yearsSinceTransaction = (DateTime.Now - transaction.Date).Days / 365.0;
+            var yearlyPerformanceRate = 1 + transaction.Asset.AverageYearlyPerformancePercent / 100;
+
+            foreach (var additionalYear in yearsToSimulate)
+            {
+                var totalYearsToSimulate = yearsSinceTransaction + additionalYear;
+
+                var futureValue = transaction.Amount * Math.Pow(yearlyPerformanceRate, totalYearsToSimulate);
+
+                var currentSimulatedValue = simulationResults[additionalYear] + futureValue;
+                simulationResults[additionalYear] = currentSimulatedValue;
+            }
+        }
+
+        return simulationResults;
     }
 
-    private double CalculateTotalFutureValue(int year)
+    public Dictionary<int, double> SimulateNetPercentageGrow(int[] yearsToSimulate)
     {
-        return _transactions.Sum(transaction => CalculateFutureValue(transaction, year));
-    }
+        var transactionGrow = SimulateTransactionGrow(yearsToSimulate);
+        var simulationResults = new Dictionary<int, double>();
 
-    private double CalculateFutureValue(Transaction transaction, int futureYearsFromNow)
-    {
-        var asset = transaction.Asset;
-        var annualGrowthRate = asset.AverageYearlyPerformancePercent / 100;
-        
-        var yearsSincePurchase = (DateTime.Now - transaction.Date).TotalDays / 365.25;
+        foreach (var year in yearsToSimulate)
+        {
+            simulationResults[year] = 0;
+        }
+        double currentWalletValue = CalculateTotalWallet();
+        foreach (var year in yearsToSimulate)
+        {
+            var simulatedValue = transactionGrow[year];
 
-        var totalYears = yearsSincePurchase + futureYearsFromNow;
+            var netIncrease = simulatedValue - currentWalletValue;
 
-        return transaction.Amount * Math.Pow(1 + annualGrowthRate, totalYears);
-    }
+            var percentageIncrease = (netIncrease / currentWalletValue) * 100;
 
-    private double CalculatePercentageChange(double totalFutureValue, double totalCurrentValue)
-    {
-        return ((totalFutureValue - totalCurrentValue) / totalCurrentValue) * 100;
+            simulationResults[year] = Math.Round(percentageIncrease, 2);
+        }
+
+        return simulationResults;
     }
 }

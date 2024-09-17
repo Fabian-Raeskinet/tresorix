@@ -16,6 +16,8 @@ public class GetPlatformsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<Ge
         {
             Id = platform.Id,
             Name = platform.Name,
+            TotalWallet = platform.CalculateTotalWallet(),
+            TotalProfit = platform.CalculateTotalProfitOrLoss(),
             Assets = platform.Assets.Select(asset => new AssetResponse
             {
                 Id = asset.Id,

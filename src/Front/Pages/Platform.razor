@@ -20,6 +20,8 @@ else
         <thead>
         <tr>
             <th>Name</th>
+            <th>TotalWallet</th>
+            <th>TotalProfit</th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +29,8 @@ else
         {
             <tr @onclick="() => ToggleDetails(platform)">
                 <td>@platform.Name</td>
+                <td>@platform.TotalWallet</td>
+                <td>@platform.TotalProfit</td>
             </tr>
         }
         </tbody>
