@@ -21,7 +21,9 @@ else
         <tr>
             <th>Name</th>
             <th>TotalWallet</th>
-            <th>TotalProfit</th>
+            <th>TotalInvestment</th>
+            <td>TotalProfit</td>
+            <td>PercentageProfit</td>
         </tr>
         </thead>
         <tbody>
@@ -30,7 +32,9 @@ else
             <tr @onclick="() => ToggleDetails(platform)">
                 <td>@platform.Name</td>
                 <td>@platform.TotalWallet</td>
+                <td>@platform.TotalInvestment</td>
                 <td>@platform.TotalProfit</td>
+                <td>@platform.PercentageProfit</td>
             </tr>
         }
         </tbody>
@@ -54,7 +58,7 @@ else
 
     private async Task ToggleDetails(PlatformResponse platform)
     {
-        var years = new[] { 1, 2, 3, 4, 5 };
+        var years = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         var query = string.Join("&", years.Select(year => $"years={year}"));
         _predictions = await Http.GetFromJsonAsync<PlatformPredictionResponse[]>($"api/Platform/{platform.Id}?{query}");

@@ -43,6 +43,16 @@ public class Platform(string name) : AggregateRoot<Guid>
         return _transactions.Sum(transaction => transaction.Amount);
     }
 
+    public double CalculateProfitPercentage()
+    {
+        double totalInvestment = CalculateTotalInvestment();
+
+        double currentWalletValue = CalculateTotalWallet();
+
+        double profitPercentage = ((currentWalletValue - totalInvestment) / totalInvestment) * 100;
+
+        return Math.Round(profitPercentage, 2);
+    }
 
     public Dictionary<int, double> SimulateTransactionGrow(int[] yearsToSimulate)
     {
@@ -81,6 +91,7 @@ public class Platform(string name) : AggregateRoot<Guid>
         {
             simulationResults[year] = 0;
         }
+
         double currentWalletValue = CalculateTotalWallet();
         foreach (var year in yearsToSimulate)
         {

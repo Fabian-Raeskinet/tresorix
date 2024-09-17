@@ -18,6 +18,8 @@ public class GetPlatformsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<Ge
             Name = platform.Name,
             TotalWallet = platform.CalculateTotalWallet(),
             TotalProfit = platform.CalculateTotalProfitOrLoss(),
+            TotalInvestment = platform.CalculateTotalInvestment(),
+            PercentageProfit = platform.CalculateProfitPercentage(),
             Assets = platform.Assets.Select(asset => new AssetResponse
             {
                 Id = asset.Id,
