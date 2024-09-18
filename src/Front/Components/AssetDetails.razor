@@ -41,6 +41,9 @@
             <td>
                 <input @bind="NewAsset.AverageYearlyPerformancePercent" placeholder="Enter performance" class="form-control"/>
             </td>
+            <td>
+                <button class="btn btn-danger" @onclick="OnCancelAdd">Cancel</button>
+            </td>
         </tr>
     }
     </tbody>
@@ -60,6 +63,7 @@ else
     [Parameter] public required bool IsAdding { get; set; }
     [Parameter] public required Asset NewAsset { get; set; }
     [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnCancelAdd { get; set; }
     [Parameter] public EventCallback OnAdd { get; set; }
     [Parameter] public EventCallback<Guid> OnDelete { get; set; }
 }

@@ -23,6 +23,7 @@ else
         <AssetDetails Assets="@_selectedPlatform.Assets"
                       OnSave="SaveAsset"
                       OnAdd="ToggleAddAsset"
+                      OnCancelAdd="CancelAdding"
                       OnDelete="DeleteAsset"
                       NewAsset="@_newAsset"
                       IsAdding="@_isAddingAsset">
@@ -53,12 +54,8 @@ else
         var years = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         var query = string.Join("&", years.Select(year => $"years={year}"));
-        if (_selectedPlatform != null)
-        {
-            _predictions = await PlatformService.GetPredictionByPlatformId(_selectedPlatform.Id, query);
-        }
-
         _selectedPlatform = platform;
+        _predictions = await PlatformService.GetPredictionByPlatformId(_selectedPlatform.Id, query);
     }
 
     private void ToggleAddAsset()
@@ -79,6 +76,12 @@ else
 
         ToggleAddAsset();
     }
+
+    private void CancelAdding()
+    {
+        ToggleAddAsset();
+    }
+    
 
     private async Task DeleteAsset(Guid assetId)
     {
