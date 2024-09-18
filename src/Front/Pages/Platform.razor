@@ -1,5 +1,6 @@
 @page "/platforms"
 @inject IPlatformService PlatformService
+@inject IAssetService AssetService
 @using Front.Components
 @using Front.Models
 @using Front.Services
@@ -85,7 +86,9 @@ else
         if (response.IsSuccessStatusCode)
         {
             _newAsset = new NewAsset();
-            _platforms = await PlatformService.GetAllAsync();
+            var createdAsset = await AssetService.GetByTicker(newAssetCommand.Ticker);
+            if (createdAsset != null) _selectedPlatform.Assets.Add(createdAsset);
+            ToggleAddAsset();
         }
     }
 

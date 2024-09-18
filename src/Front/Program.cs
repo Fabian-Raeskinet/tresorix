@@ -11,5 +11,6 @@ var apiBaseAddress = new Uri("http://localhost:5222"); // Remplace par l'URL cor
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = apiBaseAddress });
 
 builder.Services.AddScoped<IPlatformService, PlatformService>();
+builder.Services.AddScoped<IAssetService, AssetService>();
 
 await builder.Build().RunAsync();

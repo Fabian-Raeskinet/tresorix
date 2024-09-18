@@ -18,9 +18,9 @@ public class AssetRepository(ITresorixContext context) : IAssetRepository
         return await Context.Assets.FirstAsync(x => x.Id == id);
     }
 
-    public async Task<Asset> GetByTicker(string ticker)
+    public async Task<Asset?> GetByTicker(string ticker)
     {
-        return await Context.Assets.FirstAsync(x => x.Ticker == ticker);
+        return await Context.Assets.FirstOrDefaultAsync(x => x.Ticker == ticker);
     }
 
     public async Task CreateAsync(Asset asset)

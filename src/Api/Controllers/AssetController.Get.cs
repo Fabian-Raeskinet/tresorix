@@ -15,4 +15,14 @@ public partial class AssetController
         var results = await Mediator.Send(request);
         return Ok(results);
     }
+
+    [HttpGet("GetByTicker")]
+    [ProducesResponseType(typeof(AssetResponse), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetByTicker([FromQuery] GetAssetByTickerQuery query)
+    {
+        var request = new GetAssetByTickerQueryRequest { Ticker = query.Ticker };
+        var results = await Mediator.Send(request);
+        return Ok(results);
+    }
 }
