@@ -20,6 +20,8 @@ public class AssetConfiguration : IEntityTypeConfiguration<Asset>
             .HasMaxLength(30)
             .IsRequired();
 
+        builder.HasIndex(x => x.Ticker).IsUnique();
+
         builder.Property(x => x.ActualValue)
             .IsRequired();
 

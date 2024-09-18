@@ -61,6 +61,9 @@ namespace Data.Migrations.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Ticker")
+                        .IsUnique();
+
                     b.ToTable("Assets");
                 });
 

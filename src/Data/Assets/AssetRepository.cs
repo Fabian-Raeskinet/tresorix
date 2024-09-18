@@ -18,6 +18,11 @@ public class AssetRepository(ITresorixContext context) : IAssetRepository
         return await Context.Assets.FirstAsync(x => x.Id == id);
     }
 
+    public async Task<Asset> GetByTicker(string ticker)
+    {
+        return await Context.Assets.FirstAsync(x => x.Ticker == ticker);
+    }
+
     public async Task CreateAsync(Asset asset)
     {
         await Context.Assets.AddAsync(asset);

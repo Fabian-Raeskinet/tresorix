@@ -17,9 +17,9 @@ public class TresorixContextInitializer(TresorixContext context)
     {
         if (!Context.Assets.Any())
         {
-            var sp500AccAsset = new Asset("S&P500 x Acc", "SP500", 534.93, 10.0);
+            var sp500AccAsset = new Asset("S&P500 x Acc", "SP500Acc", 534.93, 10.0);
             var sp500Asset = new Asset("S&P500", "SP500", 50.34, 10.0);
-            var sp500EsgAsset = new Asset("S&P500 ESG", "SP500", 69.51, 10.0);
+            var sp500EsgAsset = new Asset("S&P500 ESG", "SP500ESG", 69.51, 10.0);
             var nasdaqAsset = new Asset("Nasdaq", "Nas", 1002.90, 15.0);
 
             var platform = new Platform("Bitpanda");

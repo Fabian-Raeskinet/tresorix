@@ -9,11 +9,16 @@ public class CreateNewAssetCommandHandler(IUnitOfWork unitOfWork) : ICommandHand
     public async Task Handle(CreateNewAssetCommandRequest request, CancellationToken cancellationToken)
     {
         var platform = await UnitOfWork.PlatformRepository.GetById(request.PlatformId);
-        
-        var asset = new Asset(request.Name, request.Ticker, request.ActualValue,
+
+        var asset = await UnitOfWork.AssetRepository.GetByTicker(request.Ticker);
+
+        if (asset is not null)
+            throw new InvalidOperationException("Asset with the same ticker already exists.");
+
+        var newAsset = new Asset(request.Name, request.Ticker, request.ActualValue,
             request.AverageYearlyPerformancePercent);
-        
-        platform.AddAsset(asset);
+
+        platform.AddAsset(newAsset);
 
         UnitOfWork.PlatformRepository.UpdateAsync(platform);
         await UnitOfWork.CommitAsync();

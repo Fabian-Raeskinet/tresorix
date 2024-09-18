@@ -1,6 +1,8 @@
 @page "/platforms"
+@inject IPlatformService PlatformService
 @using Front.Components
 @using Front.Models
+@using Front.Services
 @using Tresorix.Contracts.Assets
 @using Tresorix.Contracts.Platforms
 @inject HttpClient Http
@@ -36,15 +38,15 @@ else
 }
 
 @code {
-    private PlatformResponse[]? _platforms;
+    private List<PlatformResponse>? _platforms;
     private PlatformResponse? _selectedPlatform;
-    private PlatformPredictionResponse[]? _predictions;
+    private List<PlatformPredictionResponse>? _predictions;
     private NewAsset _newAsset = new();
     private bool _isAddingAsset;
 
     protected override async Task OnInitializedAsync()
     {
-        _platforms = await Http.GetFromJsonAsync<PlatformResponse[]>("api/Platform");
+        _platforms = await PlatformService.GetAllAsync();
     }
 
     private async Task LoadPlatformDetails(PlatformResponse platform)
@@ -52,7 +54,10 @@ else
         var years = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
         var query = string.Join("&", years.Select(year => $"years={year}"));
-        _predictions = await Http.GetFromJsonAsync<PlatformPredictionResponse[]>($"api/Platform/{platform.Id}?{query}");
+        if (_selectedPlatform != null)
+        {
+            _predictions = await PlatformService.GetPredictionByPlatformId(_selectedPlatform.Id, query);
+        }
 
         _selectedPlatform = platform;
     }
@@ -80,7 +85,7 @@ else
         if (response.IsSuccessStatusCode)
         {
             _newAsset = new NewAsset();
-            _platforms = await Http.GetFromJsonAsync<PlatformResponse[]>("api/Platform");
+            _platforms = await PlatformService.GetAllAsync();
         }
     }
 
