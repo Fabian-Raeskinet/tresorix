@@ -71,23 +71,13 @@ else
 
     private async Task SaveAsset()
     {
-        if (string.IsNullOrEmpty(_newAsset.Name) || string.IsNullOrEmpty(_newAsset.Ticker))
-            return;
-
-        var newAssetCommand = new CreateNewAssetCommand
+        if (_selectedPlatform != null)
         {
-            Name = _newAsset.Name,
-            Ticker = _newAsset.Ticker,
-            ActualValue = _newAsset.ActualValue,
-            AverageYearlyPerformancePercent = _newAsset.AverageYearlyPerformancePercent,
-            PlatformId = _selectedPlatform!.Id
-        };
-        var response = await Http.PostAsJsonAsync("api/Asset", newAssetCommand);
-        if (response.IsSuccessStatusCode)
-        {
+            await AssetService.CreateNewAssetAsync(_newAsset, _selectedPlatform.Id);
             _selectedPlatform?.Assets.Add(_newAsset);
-            ToggleAddAsset();
         }
+
+        ToggleAddAsset();
     }
 
 }

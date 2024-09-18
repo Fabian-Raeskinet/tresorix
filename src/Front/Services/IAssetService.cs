@@ -4,5 +4,6 @@ namespace Front.Services;
 
 public interface IAssetService
 {
-    Task<Asset?> GetByTicker(string ticker);
+    Task<Asset?> GetByTickerAsync(string ticker);
+    Task CreateNewAssetAsync(Asset asset,  Guid platformId);
 }

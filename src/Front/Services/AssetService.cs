@@ -8,7 +8,7 @@ public class AssetService(HttpClient httpClient) : IAssetService
 {
     private readonly HttpClient _httpClient = httpClient;
 
-    public async Task<Asset?> GetByTicker(string ticker)
+    public async Task<Asset?> GetByTickerAsync(string ticker)
     {
         var response = await _httpClient.GetFromJsonAsync<AssetResponse>($"api/Asset/GetByTicker?ticker={ticker}");
 
@@ -19,5 +19,22 @@ public class AssetService(HttpClient httpClient) : IAssetService
             ActualValue = response.ActualValue,
             AverageYearlyPerformancePercent = response.AverageYearlyPerformancePercent
         };
+    }
+
+    public async Task CreateNewAssetAsync(Asset asset, Guid platformId)
+    {
+        if (string.IsNullOrEmpty(asset.Name) || string.IsNullOrEmpty(asset.Ticker))
+            return;
+
+        var newAssetCommand = new CreateNewAssetCommand
+        {
+            Name = asset.Name,
+            Ticker = asset.Ticker,
+            ActualValue = asset.ActualValue,
+            AverageYearlyPerformancePercent = asset.AverageYearlyPerformancePercent,
+            PlatformId = platformId
+        };
+
+        await _httpClient.PostAsJsonAsync("api/Asset", newAssetCommand);
     }
 }
