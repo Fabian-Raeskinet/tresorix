@@ -14,7 +14,8 @@ public class AssetService(HttpClient httpClient) : IAssetService
 
         return new Asset
         {
-            Name = response!.Name,
+            Id = response!.Id,
+            Name = response.Name,
             Ticker = response.Ticker,
             ActualValue = response.ActualValue,
             AverageYearlyPerformancePercent = response.AverageYearlyPerformancePercent

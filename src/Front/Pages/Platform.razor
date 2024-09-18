@@ -72,10 +72,12 @@ else
 
     private async Task SaveAsset()
     {
-        if (_selectedPlatform != null)
+        if (_selectedPlatform is not null)
         {
             await AssetService.CreateNewAssetAsync(_newAsset, _selectedPlatform.Id);
-            _selectedPlatform?.Assets.Add(_newAsset);
+
+            var createdAsset = await AssetService.GetByTickerAsync(_newAsset.Ticker!);
+            if (createdAsset != null) _selectedPlatform?.Assets.Add(createdAsset);
         }
 
         ToggleAddAsset();
