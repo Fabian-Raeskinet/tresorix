@@ -1,4 +1,5 @@
 @using Tresorix.Contracts.Platforms
+@using Front.Models
 <h3>PlatformDetails</h3>
 
 
@@ -27,10 +28,10 @@
     </table>
 
 @code {
-    [Parameter] public required List<PlatformResponse> Platforms { get; set; }
-    [Parameter] public EventCallback<PlatformResponse> OnLoadPlatformDetails { get; set; }
+    [Parameter] public required List<Platform> Platforms { get; set; }
+    [Parameter] public EventCallback<Platform> OnLoadPlatformDetails { get; set; }
     
-    private async Task ToggleDetails(PlatformResponse platform)
+    private async Task ToggleDetails(Platform platform)
     {
         if (OnLoadPlatformDetails.HasDelegate)
         {

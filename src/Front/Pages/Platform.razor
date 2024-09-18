@@ -39,10 +39,10 @@ else
 }
 
 @code {
-    private List<PlatformResponse>? _platforms;
-    private PlatformResponse? _selectedPlatform;
+    private List<Front.Models.Platform>? _platforms;
+    private Front.Models.Platform? _selectedPlatform;
     private List<PlatformPredictionResponse>? _predictions;
-    private NewAsset _newAsset = new();
+    private Front.Models.Asset _newAsset = new();
     private bool _isAddingAsset;
 
     protected override async Task OnInitializedAsync()
@@ -50,7 +50,7 @@ else
         _platforms = await PlatformService.GetAllAsync();
     }
 
-    private async Task LoadPlatformDetails(PlatformResponse platform)
+    private async Task LoadPlatformDetails(Front.Models.Platform platform)
     {
         var years = new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 
@@ -66,7 +66,7 @@ else
     private void ToggleAddAsset()
     {
         _isAddingAsset = !_isAddingAsset;
-        _newAsset = new NewAsset();
+        _newAsset = new Front.Models.Asset();
     }
 
     private async Task SaveAsset()
@@ -85,9 +85,7 @@ else
         var response = await Http.PostAsJsonAsync("api/Asset", newAssetCommand);
         if (response.IsSuccessStatusCode)
         {
-            _newAsset = new NewAsset();
-            var createdAsset = await AssetService.GetByTicker(newAssetCommand.Ticker);
-            if (createdAsset != null) _selectedPlatform.Assets.Add(createdAsset);
+            _selectedPlatform?.Assets.Add(_newAsset);
             ToggleAddAsset();
         }
     }

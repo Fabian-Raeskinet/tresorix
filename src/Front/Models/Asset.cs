@@ -1,6 +1,6 @@
 namespace Front.Models;
 
-public class NewAsset
+public class Asset
 {
     public string? Name { get; set; }
     public string? Ticker { get; set; }

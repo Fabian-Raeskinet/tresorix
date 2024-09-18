@@ -52,9 +52,9 @@ else
 }
 
 @code {
-    [Parameter] public required List<AssetResponse> Assets { get; set; }
+    [Parameter] public required List<Asset> Assets { get; set; }
     [Parameter] public required bool IsAdding { get; set; }
-    [Parameter] public required NewAsset NewAsset { get; set; }
+    [Parameter] public required Asset NewAsset { get; set; }
     [Parameter] public EventCallback OnSave { get; set; }
     [Parameter] public EventCallback OnAdd { get; set; }
 }

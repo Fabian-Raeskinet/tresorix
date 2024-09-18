@@ -1,8 +1,8 @@
-using Tresorix.Contracts.Assets;
+using Front.Models;
 
 namespace Front.Services;
 
 public interface IAssetService
 {
-    Task<AssetResponse?> GetByTicker(string ticker);
+    Task<Asset?> GetByTicker(string ticker);
 }

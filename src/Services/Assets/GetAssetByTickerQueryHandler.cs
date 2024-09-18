@@ -1,3 +1,4 @@
+using Exceptions;
 using Tresorix.Contracts.Assets;
 
 namespace Tresorix.Services.Assets;
@@ -11,7 +12,7 @@ public class GetAssetByTickerQueryHandler(IUnitOfWork unitOfWork) : IQueryHandle
         var asset = await UnitOfWork.AssetRepository.GetByTicker(request.Ticker);
 
         if (asset is null)
-            throw new InvalidOperationException();
+            throw new ObjectNotFoundException("asset not found");
 
         return new AssetResponse
         {
