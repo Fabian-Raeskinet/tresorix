@@ -3,39 +3,31 @@
 <h3>PlatformDetails</h3>
 
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>TotalWallet</th>
-            <th>TotalInvestment</th>
-            <td>TotalProfit</td>
-            <td>PercentageProfit</td>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>TotalWallet</th>
+        <th>TotalInvestment</th>
+        <td>TotalProfit</td>
+        <td>PercentageProfit</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var platform in Platforms)
+    {
+        <tr @onclick="() => OnLoadPlatformDetails.InvokeAsync(platform)">
+            <td>@platform.Name</td>
+            <td>@platform.TotalWallet</td>
+            <td>@platform.TotalInvestment</td>
+            <td>@platform.TotalProfit</td>
+            <td>@platform.PercentageProfit</td>
         </tr>
-        </thead>
-        <tbody>
-        @foreach (var platform in Platforms)
-        {
-            <tr @onclick="() => ToggleDetails(platform)">
-                <td>@platform.Name</td>
-                <td>@platform.TotalWallet</td>
-                <td>@platform.TotalInvestment</td>
-                <td>@platform.TotalProfit</td>
-                <td>@platform.PercentageProfit</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    }
+    </tbody>
+</table>
 
 @code {
     [Parameter] public required List<Platform> Platforms { get; set; }
     [Parameter] public EventCallback<Platform> OnLoadPlatformDetails { get; set; }
-    
-    private async Task ToggleDetails(Platform platform)
-    {
-        if (OnLoadPlatformDetails.HasDelegate)
-        {
-            await OnLoadPlatformDetails.InvokeAsync(platform);
-        }
-    }
 }
