@@ -37,4 +37,9 @@ public class AssetService(HttpClient httpClient) : IAssetService
 
         await _httpClient.PostAsJsonAsync("api/Asset", newAssetCommand);
     }
+
+    public async Task DeleteAsset(Guid id)
+    {
+        await _httpClient.DeleteAsync($"/api/Asset/{id}");
+    }
 }

@@ -3,9 +3,9 @@ using Tresorix.Services.Assets;
 
 namespace Tresorix.Contracts.Validators.Assets;
 
-public class GetAssetByTickerQueryValidator : AbstractValidator<GetAssetByTickerQueryRequest>
+public class GetAssetByTickerQueryRequestValidator : AbstractValidator<GetAssetByTickerQueryRequest>
 {
-    public GetAssetByTickerQueryValidator()
+    public GetAssetByTickerQueryRequestValidator()
     {
         RuleFor(x => x.Ticker).NotEmpty();
     }

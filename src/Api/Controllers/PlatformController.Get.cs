@@ -15,6 +15,7 @@ public partial class PlatformController
         var results = await Mediator.Send(request);
         return Ok(results);
     }
+    
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PlatformResponse>), 200)]
     [ProducesResponseType(404)]

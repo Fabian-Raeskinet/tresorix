@@ -6,7 +6,12 @@ namespace Tresorix.Data.Assets;
 public class AssetRepository(ITresorixContext context) : IAssetRepository
 {
     public ITresorixContext Context { get; set; } = context;
-    
+
+    public void Delete(Asset asset)
+    {
+        Context.Assets.Remove(asset);
+    }
+
     public async Task<IEnumerable<Asset>> GetAllAsync()
     {
         return await Context.Assets

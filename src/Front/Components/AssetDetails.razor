@@ -9,6 +9,7 @@
         <th>Ticker</th>
         <th>Actual Value</th>
         <th>Average Yearly Performance Percent</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -19,6 +20,9 @@
             <td>@asset.Ticker</td>
             <td>@asset.ActualValue</td>
             <td>@asset.AverageYearlyPerformancePercent</td>
+            <td>
+                <button class="btn btn-danger" @onclick="() => OnDelete.InvokeAsync(asset.Id)">Delete</button>
+            </td>
         </tr>
     }
 
@@ -57,4 +61,5 @@ else
     [Parameter] public required Asset NewAsset { get; set; }
     [Parameter] public EventCallback OnSave { get; set; }
     [Parameter] public EventCallback OnAdd { get; set; }
+    [Parameter] public EventCallback<Guid> OnDelete { get; set; }
 }

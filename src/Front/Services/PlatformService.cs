@@ -25,7 +25,11 @@ public class PlatformService(HttpClient httpClient) : IPlatformService
                 Assets =
                     p.Assets.Select(a => new Asset
                         {
-                            Name = a.Name, Ticker = a.Ticker, ActualValue = a.ActualValue, AverageYearlyPerformancePercent = a.AverageYearlyPerformancePercent
+                            Id = a.Id,
+                            Name = a.Name,
+                            Ticker = a.Ticker,
+                            ActualValue = a.ActualValue,
+                            AverageYearlyPerformancePercent = a.AverageYearlyPerformancePercent
                         })
                         .ToList(),
                 Transactions = p.Transactions.Select(t => new Transaction

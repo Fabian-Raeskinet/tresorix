@@ -26,6 +26,7 @@ else
         <AssetDetails Assets="@_selectedPlatform.Assets"
                       OnSave="SaveAsset"
                       OnAdd="ToggleAddAsset"
+                      OnDelete="DeleteAsset"
                       NewAsset="@_newAsset"
                       IsAdding="@_isAddingAsset">
         </AssetDetails>
@@ -78,6 +79,17 @@ else
         }
 
         ToggleAddAsset();
+    }
+
+    private async Task DeleteAsset(Guid assetId)
+    {
+        await AssetService.DeleteAsset(assetId);
+
+        var assetToRemove = _selectedPlatform?.Assets.FirstOrDefault(a => a.Id == assetId);
+        if (assetToRemove is not null)
+        {
+            _selectedPlatform?.Assets.Remove(assetToRemove);
+        }
     }
 
 }
