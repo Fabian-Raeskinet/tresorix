@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tresorix.Data;
 
@@ -11,9 +12,11 @@ using Tresorix.Data;
 namespace Data.Migrations.Migrations
 {
     [DbContext(typeof(TresorixContext))]
-    partial class TresorixContextModelSnapshot : ModelSnapshot
+    [Migration("20240918161453_PlatformNameUnique")]
+    partial class PlatformNameUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -24,5 +24,8 @@ public class PlatformConfiguration : IEntityTypeConfiguration<Platform>
             .WithOne(t => t.Platform)
             .HasForeignKey(t => t.PlatformId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(x => x.Name)
+            .IsUnique();
     }
 }

@@ -6,5 +6,5 @@ public class Transaction
     public required double Amount { get;  set; }
     public required double Quantity { get; set; }
     public required double PriceAtBuy { get; set; }
-    public required TransactionType Type { get; set; }
+    public TransactionType Type { get; set; }
 }

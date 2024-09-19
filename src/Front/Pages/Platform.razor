@@ -17,13 +17,23 @@
 }
 else
 {
-    <PlatformDetails Platforms="@_platforms.ToList()" OnLoadPlatformDetails="LoadPlatformDetails"></PlatformDetails>
+    <PlatformDetails
+        Platforms="@_platforms.ToList()"
+        OnSave="SavePlatform"
+        OnAdd="ToggleAddPlatform"
+        OnCancelAdd="ToggleAddPlatform"
+        OnDelete="DeletePlatform"
+        NewPlatform="_newPlatform"
+        IsAdding="@_isAddingPlatform"
+        OnLoadPlatformDetails="LoadPlatformDetails">
+    </PlatformDetails>
+
     if (_selectedPlatform is not null)
     {
         <AssetDetails Assets="@_selectedPlatform.Assets"
                       OnSave="SaveAsset"
                       OnAdd="ToggleAddAsset"
-                      OnCancelAdd="CancelAdding"
+                      OnCancelAdd="ToggleAddAsset"
                       OnDelete="DeleteAsset"
                       NewAsset="@_newAsset"
                       IsAdding="@_isAddingAsset">
@@ -42,7 +52,9 @@ else
     private Front.Models.Platform? _selectedPlatform;
     private List<PlatformPredictionResponse>? _predictions;
     private Front.Models.Asset _newAsset = new();
+    private Front.Models.Platform _newPlatform = new();
     private bool _isAddingAsset;
+    private bool _isAddingPlatform;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,6 +76,13 @@ else
         _newAsset = new Front.Models.Asset();
     }
 
+    private void ToggleAddPlatform()
+    {
+        _selectedPlatform = null;
+        _isAddingPlatform = !_isAddingPlatform;
+        _newPlatform = new Front.Models.Platform();
+    }
+
     private async Task SaveAsset()
     {
         if (_selectedPlatform is not null)
@@ -71,17 +90,36 @@ else
             await AssetService.CreateNewAssetAsync(_newAsset, _selectedPlatform.Id);
 
             var createdAsset = await AssetService.GetByTickerAsync(_newAsset.Ticker!);
-            if (createdAsset != null) _selectedPlatform?.Assets.Add(createdAsset);
+            if (createdAsset != null) _selectedPlatform?.Assets?.Add(createdAsset);
         }
 
         ToggleAddAsset();
     }
 
-    private void CancelAdding()
+
+    private async Task DeletePlatform(Guid platformId)
     {
-        ToggleAddAsset();
+        await PlatformService.DeleteAsync(platformId);
+        if (_platforms != null)
+        {
+            var platformToRemove = _platforms.First(x => x.Id == platformId);
+            _platforms.Remove(platformToRemove);
+        }
     }
-    
+
+
+    private async Task SavePlatform()
+    {
+        await PlatformService.CreateNewPlatform(_newPlatform);
+        if (_newPlatform.Name != null)
+        {
+            var createdPlatform = await PlatformService.GetByName(_newPlatform.Name);
+            _platforms?.Add(createdPlatform);
+        }
+
+        ToggleAddPlatform();
+    }
+
 
     private async Task DeleteAsset(Guid assetId)
     {

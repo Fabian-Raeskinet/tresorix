@@ -23,7 +23,7 @@ public class PlatformService(HttpClient httpClient) : IPlatformService
                 TotalInvestment = p.TotalInvestment,
                 PercentageProfit = p.PercentageProfit,
                 Assets =
-                    p.Assets.Select(a => new Asset
+                     p.Assets.Select(a => new Asset
                         {
                             Id = a.Id,
                             Name = a.Name,
@@ -32,17 +32,31 @@ public class PlatformService(HttpClient httpClient) : IPlatformService
                             AverageYearlyPerformancePercent = a.AverageYearlyPerformancePercent
                         })
                         .ToList(),
-                Transactions = p.Transactions.Select(t => new Transaction
-                    {
-                        Date = t.Date,
-                        Amount = t.Amount,
-                        Quantity = t.Quantity,
-                        PriceAtBuy = t.PriceAtBuy,
-                        Type = TransactionType.Buy, // Assuming all transactions are of type Buy
-                    })
-                    .ToList()
             })
             .ToList();
+    }
+
+    public async Task<Platform> GetByName(string name)
+    {
+        var response = await _httpClient.GetFromJsonAsync<PlatformResponse>($"api/Platform/GetByName/{name}");
+        return new Platform
+        {
+            Id = response!.Id,
+            Name = response.Name,
+            TotalWallet = response.TotalWallet,
+            TotalProfit = response.TotalProfit,
+            TotalInvestment = response.TotalInvestment,
+            PercentageProfit = response.PercentageProfit,
+            Assets = response.Assets.Select(a => new Asset
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                    Ticker = a.Ticker,
+                    ActualValue = a.ActualValue,
+                    AverageYearlyPerformancePercent = a.AverageYearlyPerformancePercent
+                })
+                .ToList()
+        };
     }
 
     public async Task<List<PlatformPredictionResponse>?> GetPredictionByPlatformId(Guid id, string query)
@@ -51,8 +65,21 @@ public class PlatformService(HttpClient httpClient) : IPlatformService
         return response?.ToList();
     }
 
-    public async Task AddAssetAsync(CreateNewAssetCommand assetCommand)
+    public async Task CreateNewPlatform(Platform platform)
     {
-        await _httpClient.PostAsJsonAsync("api/Asset", assetCommand);
+        if (platform.Name is not null)
+        {
+            var newPlatformCommand = new CreateNewPlatformCommand()
+            {
+                Name = platform.Name,
+            };
+            await _httpClient.PostAsJsonAsync("api/Platform", newPlatformCommand);
+        }
+    }
+
+    public Task DeleteAsync(Guid id)
+    {
+        
+        return _httpClient.DeleteAsync($"api/Platform/{id}");
     }
 }

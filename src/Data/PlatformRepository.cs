@@ -22,8 +22,26 @@ public class PlatformRepository(ITresorixContext context) : IPlatformRepository
             .FirstAsync(x => x.Id == id);
     }
 
+    public async Task<Platform> GetByName(string name)
+    {
+        return await Context.Platforms
+            .Include(x => x.Assets)
+            .Include(x => x.Transactions)
+            .FirstAsync(x => x.Name == name);
+    }
+
     public void UpdateAsync(Platform platform)
     {
         Context.Platforms.Update(platform);
+    }
+
+    public async Task CreateAsync(Platform platform)
+    {
+        await Context.Platforms.AddAsync(platform);
+    }
+
+    public void DeleteAsync(Platform platform)
+    {
+        Context.Platforms.Remove(platform);
     }
 }

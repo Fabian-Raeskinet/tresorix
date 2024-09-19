@@ -15,7 +15,18 @@ public partial class PlatformController
         var results = await Mediator.Send(request);
         return Ok(results);
     }
-    
+
+
+    [HttpGet("GetByName/{platformName}")]
+    [ProducesResponseType(typeof(PlatformResponse), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetByName([FromRoute] string platformName)
+    {
+        var request = new GetPlatformByNameQueryRequest { Name = platformName };
+        var result = await Mediator.Send(request);
+        return Ok(result);
+    }
+
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PlatformResponse>), 200)]
     [ProducesResponseType(404)]
